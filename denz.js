@@ -52,6 +52,7 @@ const googleImage = require('g-i-s')
 const toMs = require('ms')
 const fetch = require('node-fetch')
 const imgbb = require('imgbb-uploader')
+const brainlyv2 = require('brainly-scraper-v2')
 const Math_js = require('mathjs')
 const { EmojiAPI } = require("emoji-api")
 const emoji = new EmojiAPI()
@@ -239,13 +240,13 @@ try {
 	    baterai.isCharge = json[2][0][1].live
 	    })
 	    if (multi){
-		    var prefix = /^[°zZ#$@*+,.?=''():√%!¢£¥€π¤ΠΦ_&><`™©®Δ^βα¦|/\\©^]/.test(cmd) ? cmd.match(/^[°zZ#$@*+,.?=''():√%¢£¥€π¤ΠΦ_&><!`™©®Δ^βα¦|/\\©^]/gi) : '.'
+		    var prefix = /^[°zZ#$@*+,.?=''():√%!¢£¥€π¤ΠΦ_&><`™©®Δ^βα~¦|/\\©^]/.test(cmd) ? cmd.match(/^[°zZ#$@*+,.?=''():√%¢£¥€π¤ΠΦ_&><!`™©®Δ^βα~¦|/\\©^]/gi) : '.'
         } else {
             if (nopref){
                 prefix = ''
                } else {
                	if (allpref){
-               	var prefix = /^[°zZ#$@*+,.?=''():√%!¢£¥€π¤ΠΦ_&><`™©®Δ^βα¦|/\\©^]/.test(cmd) ? cmd.match(/^[°zZ#$@*+,.?=''():√%¢£¥€π¤ΠΦ_&><!`™©®Δ^βα¦|/\\©^]/gi) : ''
+               	var prefix = /^[°zZ#$@*+,.?=''():√%!¢£¥€π¤ΠΦ_&><`™©®Δ^βα~¦|/\\©^]/.test(cmd) ? cmd.match(/^[°zZ#$@*+,.?=''():√%¢£¥€π¤ΠΦ_&><!`™©®Δ^βα~¦|/\\©^]/gi) : ''
             } else {
                 prefix = prefa
             }
@@ -1011,7 +1012,7 @@ reply('http://youtube.com/dcodedenpa')
 ╾ _Bio : ${stst}_
 ╾ _Nomor : @${stod.split('@')[0]}_
 ╾ _Info Nomor : ${num.data.country_code} - ${num.data.carrier.type} - ${num.data.carrier.name}_`
-sendButDocument(from, `${menu}`, "*_© Dcode Denpa_*", fs.readFileSync('./sampah/denpa'), {mimetype:Mimetype.pdf, thumbnail:fs.readFileSync('./media/image/banner.jpg'), filename:`${jmn} - ${week} - ${calender}`}, [{buttonId:`command`,buttonText:{displayText:'LIST MENU'},type:1},{buttonId:`owner`,buttonText:{displayText:'DEVELOPER'},type:1},{buttonId:`script`,buttonText:{displayText:'SOURCE CODE'},type:1}], {quoted:fmen, contextInfo: { mentionedJid: [dtod,otod,stod], forwardingScore: 508, isForwarded: true, externalAdReply:{title:`${tampilUcapan} ${pushname}\n*click here to play music`,mediaType:"2",thumbnail:ofrply,mediaUrl:`https://youtu.be/uQiF1yOnzDg`}}})
+sendButDocument(from, `${menu}`, "*_© Dcode Denpa_*", fs.readFileSync('./sampah/denpa'), {mimetype:Mimetype.pdf, thumbnail:fs.readFileSync('./media/image/banner.jpg'), filename:`${jmn} - ${week} - ${calender}`}, [{buttonId:`command`,buttonText:{displayText:'LIST MENU'},type:1},{buttonId:`owner`,buttonText:{displayText:'DEVELOPER'},type:1},{buttonId:`script`,buttonText:{displayText:'SOURCE CODE'},type:1}], {quoted:fmen, contextInfo: { mentionedJid: [dtod,otod,stod], forwardingScore: 508, isForwarded: true, externalAdReply:{title:`${tampilUcapan} ${pushname}`,body:`*click here to play music`,mediaType:"2",thumbnail:ofrply,mediaUrl:`https://youtu.be/uQiF1yOnzDg`}}})
 break
 case 'command':
  stod = `${sender}`
@@ -1145,6 +1146,7 @@ menu = `❏ 「 \`\`\`MENU DOWNLOAD\`\`\` 」
 ├ ${prefix}google [ _search_ ]
 ├ ${prefix}gimage [ _search_ ]
 ├ ${prefix}wiki [ _search_ ]
+├ ${prefix}brainly [ _search_ ]
 ├ ${prefix}mediafire [ _link_ ]
 ├ ${prefix}ytsearch [ _judul_ ]
 ├ ${prefix}ytmp4 [ _link yt_ ]
@@ -1259,6 +1261,16 @@ menu = `❏ 「 \`\`\`MENU OTHER\`\`\` 」
 └ ${prefix}detikvideo [ _reply video caption angka_ ]`
 katalog(menu)
 break
+case 'brainly':
+                if (!c) return reply(`Kirim perintah: ${prefix}brainly Soal`)
+                brainlyv2(c, 5, "id").then(res => {
+                    let resultbrainlyv2 = `\`\`\`「 BRAINLY-SEARCH 」\`\`\`\n\n`
+                    for (let x = 0; x < res.data.length; x++) {
+                        resultbrainlyv2 += `• *Soal:* ${res.data[x].pertanyaan}\n• *Jawaban:* ${res.data[x].jawaban[0].text.replace('Jawaban:', '').trim()}\n\n`
+                    }
+                    reply(resultbrainlyv2.trim())
+                    })
+                break
 case 'jadibot':
 client.version = [2, 2119, 6]
 client.browserDescription = ['Dcode Denpa','Desktop','3.0']
@@ -2078,7 +2090,7 @@ case 'matrix':
 				    if (!c.includes('|')) return  reply(mess.error.api)
                     const text1 = c.substring(0, c.indexOf('|') - 0)
                     const text2 = c.substring(c.lastIndexOf('|') + 1)
-                    reply( text1 + readmore + text2)
+                    denz.sendMessage(from, `${text1 + readmore + text2}`, text, {quoted:mek})
                     break
                     case 'delchat':
                     if (!isOwner && !mek.key.fromMe) return reply(mess.only.ownerB)
@@ -2746,7 +2758,6 @@ Runtime : ${kyun(uptime)}
 Baterai : ${baterai.battery}
 Charged : ${baterai.isCharge}
 Mode : ${publik ? 'public' : 'self'}
-Prefix : ${multi ? 'Multi Prefix' : 'No Prefix'}
 Penggunaan Ram : ${ram2}
 Hostname : ${os.hostname()}
 Platform : ${os.platform()}
